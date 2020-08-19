@@ -6,24 +6,30 @@ using System.Threading.Tasks;
 
 namespace assignment1
 {
-    class Accounts
+    class Account
     {
         private string firstName, lastName, address, email;
         private int phoneNumber, userId;
         private double accountBalance;
 
-        public void newAccount(string tempFirstName, string tempLastName, string tempAddress, string tempEmail, int tempPhoneNumber, double tempAccountBalance, int tempuserId)
-        {
+        public  Account (string tempFirstName, string tempLastName, string tempAddress, int tempPhoneNumber, string tempEmail ) 
+        { 
             firstName = tempFirstName;
             lastName = tempLastName;
             address = tempAddress;
-            email = tempEmail;
             phoneNumber = tempPhoneNumber;
-            accountBalance = tempAccountBalance ;
-            userId = tempuserId;
+            email = tempEmail;
         }
         public void accountStatment()
         {
+            Console.WriteLine("Account No: ");
+            Console.WriteLine("Account Balance: ");
+            Console.WriteLine("First Name: ");
+            Console.WriteLine("Last Name: ");
+            Console.WriteLine("Address: ");
+            Console.WriteLine("Phone: ");
+            Console.WriteLine("Email: ");
+            Console.ReadLine();
 
         }
         public void accountDeposit (double amount)
@@ -56,7 +62,18 @@ namespace assignment1
         }
         public void createAccount()
         {
-
+            Console.WriteLine("First Name: ");
+            string inputFname = Console.ReadLine();
+            Console.WriteLine("Last Name: ");
+            string inputLname = Console.ReadLine();
+            Console.WriteLine("Address: ");
+            string inputAddress = Console.ReadLine();
+            Console.WriteLine("Phone: ");
+            string tempNumber = Console.ReadLine();
+            int inputNumber = Convert.ToInt32(tempNumber);
+            Console.WriteLine("Email: ");
+            string inputEmail = Console.ReadLine();
+            Account accountTest = new Account(inputFname, inputLname, inputAddress, inputNumber, inputEmail);
         }
         public void searchAccount()
         {
