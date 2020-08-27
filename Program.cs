@@ -12,7 +12,7 @@ namespace assignment1
         private int phoneNumber, userId;
         private double accountBalance;
 
-        public  Account (string tempFirstName, string tempLastName, string tempAddress, int tempPhoneNumber, string tempEmail ) 
+        public Account (string tempFirstName, string tempLastName, string tempAddress, int tempPhoneNumber, string tempEmail ) 
         { 
             firstName = tempFirstName;
             lastName = tempLastName;
@@ -20,7 +20,7 @@ namespace assignment1
             phoneNumber = tempPhoneNumber;
             email = tempEmail;
         }
-        public void accountStatment()
+        public void accountStatement()
         {
             Console.WriteLine("Account No: ");
             Console.WriteLine("Account Balance: ");
@@ -69,30 +69,43 @@ namespace assignment1
             Console.WriteLine("Address: ");
             string inputAddress = Console.ReadLine();
             Console.WriteLine("Phone: ");
-            string tempNumber = Console.ReadLine();
-            int inputNumber = Convert.ToInt32(tempNumber);
+            int inputNumber = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Email: ");
             string inputEmail = Console.ReadLine();
-            Account accountTest = new Account(inputFname, inputLname, inputAddress, inputNumber, inputEmail);
+            Account accountCreate = new Account(inputFname, inputLname, inputAddress, inputNumber, inputEmail);
         }
         public void searchAccount()
         {
 
+            Console.WriteLine("Account Number: ");
+            string inputAccountNumber = Console.ReadLine();
+
         }
         public void depositAccount()
         {
+            Console.WriteLine("Account Number: ");
+            string inputAccountNumber = Console.ReadLine();
+            Console.WriteLine("Amount: $");
+            int inputAmount = Convert.ToInt32(Console.ReadLine());
 
         }
         public void withdrawAcount()
         {
-
+            Console.WriteLine("Account Number: ");
+            string inputAccountNumber = Console.ReadLine();
+            Console.WriteLine("Amount: $");
+            int inputAmount = Convert.ToInt32(Console.ReadLine());
         }
         public void displayAccountStatement()
         {
+            Console.WriteLine("Account Number: ");
+            string inputAccountNumber = Console.ReadLine();
 
         }
         public void deleteAccount()
         {
+            Console.WriteLine("Account Number: ");
+            string inputAccountNumber = Console.ReadLine();
 
         }
         public void exitAccount()
