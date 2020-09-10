@@ -6,51 +6,9 @@ using System.Threading.Tasks;
 
 namespace assignment1
 {
-    class Account
+    class Person
     {
-        private string firstName, lastName, address, email;
-        private int phoneNumber, userId;
-        private double accountBalance;
-
-        public Account (string tempFirstName, string tempLastName, string tempAddress, int tempPhoneNumber, string tempEmail ) 
-        { 
-            firstName = tempFirstName;
-            lastName = tempLastName;
-            address = tempAddress;
-            phoneNumber = tempPhoneNumber;
-            email = tempEmail;
-        }
-        public void accountStatement()
-        {
-            Console.WriteLine("Account No: ");
-            Console.WriteLine("Account Balance: ");
-            Console.WriteLine("First Name: ");
-            Console.WriteLine("Last Name: ");
-            Console.WriteLine("Address: ");
-            Console.WriteLine("Phone: ");
-            Console.WriteLine("Email: ");
-            Console.ReadLine();
-
-        }
-        public void accountDeposit (double amount)
-        {
-            double temp = accountBalance;
-            accountBalance = temp + amount;
-        }
-        public void accountWithdraw(double amount)
-        {
-            double temp = accountBalance;
-            accountBalance = temp - amount;
-        }
-    }
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("User Name: ");
-            Console.WriteLine("Password: ");
-        }
-        public void loginAccount()
+        public void menu()
         {
             Console.WriteLine("1. Create a New Account");
             Console.WriteLine("2. Search for an account");
@@ -59,6 +17,7 @@ namespace assignment1
             Console.WriteLine("5. A/C Statement");
             Console.WriteLine("6. Delete an account");
             Console.WriteLine("7. Exit");
+            Console.ReadKey();
         }
         public void createAccount()
         {
@@ -76,10 +35,8 @@ namespace assignment1
         }
         public void searchAccount()
         {
-
             Console.WriteLine("Account Number: ");
             string inputAccountNumber = Console.ReadLine();
-
         }
         public void depositAccount()
         {
@@ -110,10 +67,57 @@ namespace assignment1
         }
         public void exitAccount()
         {
-
+            Console.WriteLine("Goodbye");
+            Console.ReadKey();
         }
+    }
+    class Account
+    {
+        private string firstName, lastName, address, email;
+        private int phoneNumber, userId;
+        private double accountBalance;
 
-
+        public Account (string tempFirstName, string tempLastName, string tempAddress, int tempPhoneNumber, string tempEmail ) 
+        { 
+            firstName = tempFirstName;
+            lastName = tempLastName;
+            address = tempAddress;
+            phoneNumber = tempPhoneNumber;
+            email = tempEmail;
+        }
+        public void accountStatement()
+        {
+            Console.WriteLine("Account No: ");
+            Console.WriteLine("Account Balance: ");
+            Console.WriteLine("First Name: ");
+            Console.WriteLine("Last Name: ");
+            Console.WriteLine("Address: ");
+            Console.WriteLine("Phone: ");
+            Console.WriteLine("Email: ");
+            Console.ReadLine();
+        }
+        public void accountDeposit (double amount)
+        {
+            double temp = accountBalance;
+            accountBalance = temp + amount;
+        }
+        public void accountWithdraw(double amount)
+        {
+            double temp = accountBalance;
+            accountBalance = temp - amount;
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("User Name: ");
+            Console.WriteLine("Password: ");
+            Console.ReadKey();
+            Console.WriteLine("");
+            Person test = new Person();
+            test.menu();
+        }
 
     }
 }
