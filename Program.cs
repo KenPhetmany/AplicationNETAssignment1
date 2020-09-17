@@ -136,16 +136,23 @@ namespace assignment1
             void displayAccountDetails()
                 {
                 searchAccount();
-                Console.WriteLine("I would display account details");
-                Console.ReadKey();
-                int inputUserId = RandomNumberGenerator();
-                double inputAccountBalance = Convert.ToInt32(Console.ReadLine());
-                string inputFname = Console.ReadLine();
-                string inputLname = Console.ReadLine();
-                string inputAddress = Console.ReadLine();
-                int inputNumber = Convert.ToInt32(Console.ReadLine());
-                string inputEmail = Console.ReadLine();
-                //Account account = new Account(inputUserId, inputAccountBalance, inputFname, inputLname, inputAddress, inputNumber, inputEmail);
+                string[] lines = System.IO.File.ReadAllLines("accounts\\" + inputAccount + ".txt");
+                string[] detail = lines[0].Split('|');
+                int inputUserId = Convert.ToInt32(detail[1]);
+                detail = lines[1].Split('|');
+                string inputFname = detail[1];
+                detail = lines[2].Split('|');
+                string inputLname = detail[1];
+                detail = lines[3].Split('|');
+                string inputAddress = detail[1];
+                detail = lines[4].Split('|');
+                int inputPNumber = Convert.ToInt32(detail[1]);
+                detail = lines[5].Split('|');
+                string inputEmail = detail[1];
+                detail = lines[6].Split('|');
+                double inputAccountBalance = Convert.ToInt32(detail[1]);
+                Account account = new Account(inputUserId, inputAccountBalance, inputFname, inputLname, inputAddress, inputPNumber, inputEmail);
+                account.AccountStatement();
                 }
             void depositAccount()
                 {
@@ -198,19 +205,21 @@ namespace assignment1
                 Console.WriteLine("║          Email:                      ║");
                 Console.WriteLine("║                                      ║");
                 Console.WriteLine("╚══════════════════════════════════════╝");
-                Console.SetCursorPosition(21, 4);
+                Console.SetCursorPosition(23, 7);
                 string inputFname = Console.ReadLine();
-                Console.SetCursorPosition(21, 5);
+                Console.SetCursorPosition(22, 8);
                 string inputLname = Console.ReadLine();
-                Console.SetCursorPosition(21, 6);
+                Console.SetCursorPosition(20, 9);
                 string inputAddress = Console.ReadLine();
-                Console.SetCursorPosition(21, 7);
+                Console.SetCursorPosition(18, 10);
                 int inputNumber = Convert.ToInt32(Console.ReadLine());
-                Console.SetCursorPosition(21, 8);
+                Console.SetCursorPosition(18, 11);
                 string inputEmail = Console.ReadLine();
                 double inputAccountBalance = 0.0;
                 int inputUserId = RandomNumberGenerator();
-                Account accountCreate = new Account(inputUserId, inputAccountBalance, inputFname, inputLname, inputAddress, inputNumber, inputEmail);
+                Console.WriteLine(inputUserId);
+                CreateAccount(inputUserId, inputFname, inputLname, inputAddress, inputNumber, inputEmail, inputAccountBalance);
+                Console.ReadKey();
                 }
             }
         public int RandomNumberGenerator()
@@ -218,6 +227,20 @@ namespace assignment1
             Random rnd = new Random();
             int number = rnd.Next(1000001, 9999999);
             return number;
+            }
+
+        public void CreateAccount(int userId, string firstName, string lastName, string address, int phoneNumber, string email, double accountBalance)
+            {
+            File.Create("accounts\\" + userId + ".txt");
+            TextWriter text = new StreamWriter("accounts\\" + userId + ".txt");
+            text.WriteLine("AccountNo|{0}", userId);
+            text.WriteLine("First Name|{0}", firstName);
+            text.WriteLine("Last Name|{0}", lastName);
+            text.WriteLine("Address|{0}", address);
+            text.WriteLine("Phone|{0}", phoneNumber);
+            text.WriteLine("Email|{0}", email);
+            text.WriteLine("Balance|{0}", accountBalance);
+            text.Close();         
             }
         }
 
@@ -240,36 +263,37 @@ namespace assignment1
 
         public void AccountStatement()
             {
-            Console.WriteLine("╔══════════════════════════════════════╗");
-            Console.WriteLine("║                                      ║");
-            Console.WriteLine("║  WELCOME TO SIMPLE BANKING SYSTEM    ║");
-            Console.WriteLine("║                                      ║");
-            Console.WriteLine("╠══════════════════════════════════════╣");
-            Console.WriteLine("║                                      ║");
-            Console.WriteLine("║          Account No:                 ║");
-            Console.WriteLine("║          Account Balance:            ║");
-            Console.WriteLine("║          First Name:                 ║");
-            Console.WriteLine("║          Last Name:                  ║");
-            Console.WriteLine("║          Address:                    ║");
-            Console.WriteLine("║          Phone:                      ║");
-            Console.WriteLine("║          Email:                      ║");
-            Console.WriteLine("║                                      ║");
-            Console.WriteLine("╚══════════════════════════════════════╝");
-            Console.SetCursorPosition(21, 4);
+            Console.Clear();
+            Console.WriteLine("╔═══════════════════════════════════════╗");
+            Console.WriteLine("║                                       ║");
+            Console.WriteLine("║            ACCOUNT DETAILS            ║");
+            Console.WriteLine("║                                       ║");
+            Console.WriteLine("╠═══════════════════════════════════════╣");
+            Console.WriteLine("║                                       ║");
+            Console.WriteLine("║       Account No:                     ║");
+            Console.WriteLine("║       Account Balance: $              ║");
+            Console.WriteLine("║       First Name:                     ║");
+            Console.WriteLine("║       Last Name:                      ║");
+            Console.WriteLine("║       Address:                        ║");
+            Console.WriteLine("║       Phone:                          ║");
+            Console.WriteLine("║       Email:                          ║");
+            Console.WriteLine("║                                       ║");
+            Console.WriteLine("╚═══════════════════════════════════════╝");
+            Console.SetCursorPosition(20, 6);
             Console.Write(userId);
-            Console.SetCursorPosition(21, 5);
+            Console.SetCursorPosition(26, 7);
             Console.Write(accountBalance);
-            Console.SetCursorPosition(21, 6);
+            Console.SetCursorPosition(20, 8);
             Console.Write(firstName);
-            Console.SetCursorPosition(21, 7);
+            Console.SetCursorPosition(19, 9);
             Console.Write(lastName);
-            Console.SetCursorPosition(21, 8);
+            Console.SetCursorPosition(17, 10);
             Console.Write(address);
-            Console.SetCursorPosition(21, 9);
+            Console.SetCursorPosition(15, 11);
             Console.Write(phoneNumber);
-            Console.SetCursorPosition(21, 10);
+            Console.SetCursorPosition(15, 12);
             Console.Write(email);
-            Console.ReadLine();
+            Console.ReadKey();
             }
 
         public void AccountDeposit(double amount)
