@@ -12,6 +12,7 @@ namespace assignment1
         private double inputAccountBalance;
 
         public void menu()
+        // Main menu after user logs in successfully.
             {
             Console.Clear();
             Console.WriteLine("╔════════════════════════════════════╗");
@@ -28,14 +29,16 @@ namespace assignment1
             Console.WriteLine("║   Enter Number:                    ║");
             Console.WriteLine("╚════════════════════════════════════╝");
             Console.SetCursorPosition(18, 11);
+            string input = Console.ReadLine();
             while (true)
+            // User has to enter a number between 1-7 in order to use a specific feature.
                 {
-                    
-                    int inputChoice = Convert.ToInt32(Console.ReadLine());
-                    switch (inputChoice)
+                try
+                    {
+                    switch (Convert.ToInt32(input))
                         {
                         case 1:
-                            createAccount();
+                            createForm();
                             break;
 
                         case 2:
@@ -62,71 +65,101 @@ namespace assignment1
                             exitAccount();
                             break;
                         }
-                    
-                }
-
-            void displayAccountDetails()
-                {
-                if (SearchAccount())
+                    }
+                catch (Exception e)
                     {
+                    Console.WriteLine("Invalid Inputs! Please enter a number within 1-7");
+                    Console.ReadKey();
+                    menu();
+                    }
+                }
+            // Nearly all functions will involve the bool SearchAccount(), GetAccount() and bool ErrorAccount() to remove repetitve code.
+            void displayAccountDetails()
+            // Function responsible in showing the statement of an existing account.
+                {
+                string title = "SEARCH AN ACCOUNT";
+                // If SearchAccount() returns true, function continues, using the user input.
+                if (SearchAccount(title))
+                    {
+                    // Gets details from the located account.
                     GetAccount();
                     Account account = new Account(inputUserId, inputAccountBalance, inputFname, inputLname, inputAddress, inputPNumber, inputEmail);
+                    //Displays the statement to the user.
                     account.AccountStatement();
                     Console.WriteLine("Enter any key to go back to menu!");
                     Console.ReadKey();
                     menu();
                     }
                 else
+                // If SearchAccount() returns False, ErrorAccount is invoked (Function failed in locating the account).
                 if (ErrorAccount())
+                // Await's user response to attempt the function again, otherwise return menu.
                     {
                     displayAccountDetails();
                     }
                 else menu();
                 }
             void depositAccount()
+            // Function responsible for depositing money to an existing account.
                 {
-                if (SearchAccount())
+                string title = "DEPOSIT";
+                // If SearchAccount() returns true, function continues, using the user input.
+                if (SearchAccount(title))
                     {
+                    // Setting minor interface features to maintain ease of use for the user.
                     Console.SetCursorPosition(0, 11);
                     Console.WriteLine("Account found! Enter the amount...");
                     Console.SetCursorPosition(0, 8);
                     Console.WriteLine("║          Amount : $                  ║");
                     Console.SetCursorPosition(21, 8);
+                    // User attempts to input the value as a double type.
                     double inputAmount = Convert.ToInt32(Console.ReadLine());
+                    // Gets details from the located account and set it.
                     GetAccount();
                     Account account = new Account(inputUserId, inputAccountBalance, inputFname, inputLname, inputAddress, inputPNumber, inputEmail);
+                    // Updates the value of the provided account.
                     account.AccountDeposit(inputAmount);
                     Console.WriteLine("Deposit Successful!");
                     Console.ReadKey();
                     menu();
-
                     }
                 else
+                // If SearchAccount() returns False, ErrorAccount is invoked (Function failed in locating the account).
                 if (ErrorAccount())
+                // Await's user response to attempt the function again, otherwise return menu.
                     {
                     depositAccount();
                     }
                 else menu();
                 }
             void withdrawAcount()
+            // Function responsible for withdrawing money to an existing account.
                 {
-                if (SearchAccount())
+                string title = "WITHDRAW";
+                // If SearchAccount() returns true, function continues, using the user input.
+                if (SearchAccount(title))
                     {
+                    // Setting minor interface features to maintain ease of use for the user.
                     Console.SetCursorPosition(0, 11);
                     Console.WriteLine("Account found! Enter the amount...");
                     Console.SetCursorPosition(0, 8);
                     Console.WriteLine("║          Amount : $                  ║");
                     Console.SetCursorPosition(21, 8);
+                    // User attempts to input the value as a double type.
                     double inputAmount = Convert.ToInt32(Console.ReadLine());
+                    // Gets details from the located account and set it.
                     GetAccount();
                     Account account = new Account(inputUserId, inputAccountBalance, inputFname, inputLname, inputAddress, inputPNumber, inputEmail);
+                    // Updates the value of the provided account.
                     account.AccountWithdraw(inputAmount);
                     Console.WriteLine("Withdraw Successful!");
                     Console.ReadKey();
                     menu();
                     }
                 else
+                // If SearchAccount() returns False, ErrorAccount is invoked (Function failed in locating the account).
                 if (ErrorAccount())
+                // Await's user response to attempt the function again, otherwise return menu.
                     {
                     withdrawAcount();
                     }
@@ -134,24 +167,35 @@ namespace assignment1
                 Console.ReadKey();
                 }
             void emailAccountStatement()
+            // Function responsible for sending an account statment.
                 {
-                if (SearchAccount())
+                string title = "STATEMENT";
+                // If SearchAccount() returns true, function continues, using the user input.
+                if (SearchAccount(title))
                     {
+                    // Gets details from the located account and set it.
                     GetAccount();
                     Account account = new Account(inputUserId, inputAccountBalance, inputFname, inputLname, inputAddress, inputPNumber, inputEmail);
                     account.AccountStatement();
                     Console.WriteLine("Send Email (y/n)?");
                     Console.SetCursorPosition(22, 15);
+                    // Awaits confirmation to continue the function, otherwise return to menu.
                     if (ConfirmChoice())
                         {
+                        // Calls in the function to send the email, using the set email.
                         account.SendEmail();
                         Console.SetCursorPosition(0, 17);
                         Console.WriteLine("Email sent successfully!...");
                         Console.ReadKey();
                         menu();
                         }
+                    else
+                        {
+                        menu();
+                        }
                     }
                 else
+                // If SearchAccount() returns false, ErrorAccount is invoked (Function failed in locating the account).
                 if (ErrorAccount())
                     {
                     emailAccountStatement();
@@ -160,16 +204,22 @@ namespace assignment1
                 Console.ReadKey();
                 }
             void deleteAccount()
+            // Function responsible for deleting an existing account
                 {
-                if (SearchAccount())
+                string title = "DELETE AN ACCOUNT";
+                // If SearchAccount() returns true, function continues, using the user input.
+                if (SearchAccount(title))
                     {
+                    // Gets details from the located account and set it.
                     GetAccount();
                     Account account = new Account(inputUserId, inputAccountBalance, inputFname, inputLname, inputAddress, inputPNumber, inputEmail);
                     account.AccountStatement();
                     Console.WriteLine("Delete Account (y/n)?");
                     Console.SetCursorPosition(22, 15);
+                    // Awaits confirmation to continue the function, otherwise return to menu.
                     if (ConfirmChoice())
                         {
+                        // Calls in the function to delete the email.
                         account.AccountDelete();
                         Console.SetCursorPosition(0, 17);
                         Console.WriteLine("Account Deleted...");
@@ -181,6 +231,7 @@ namespace assignment1
                         menu();
                         }
                     }
+                // If SearchAccount() returns false, ErrorAccount is invoked (Function failed in locating the account).
                 else
                 if (ErrorAccount())
                     {
@@ -190,13 +241,17 @@ namespace assignment1
                 Console.ReadKey();
                 }
             void exitAccount()
+            // Function responsible for closing the program.
                 {
                 Console.Clear();
-                Console.ReadKey();
+                System.Environment.Exit(1);
                 }
 
-            void createAccount()
+            void createForm()
+            // Function responsible for creating an account.
+
                 {
+                // Collects all user inputs.
                 Console.Clear();
                 Console.WriteLine("╔══════════════════════════════════════╗");
                 Console.WriteLine("║                                      ║");
@@ -212,6 +267,8 @@ namespace assignment1
                 Console.WriteLine("║          Email:                      ║");
                 Console.WriteLine("║                                      ║");
                 Console.WriteLine("╚══════════════════════════════════════╝");
+                double inputAccountBalance = 0.0;
+                int inputUserId = RandomNumberGenerator();
                 Console.SetCursorPosition(23, 7);
                 string inputFname = Console.ReadLine();
                 Console.SetCursorPosition(22, 8);
@@ -220,7 +277,9 @@ namespace assignment1
                 string inputAddress = Console.ReadLine();
                 Console.SetCursorPosition(18, 10);
                 string inputNumber = Console.ReadLine();
+                // Calls NumberCheck() to validate phone number
                 while (NumberCheck(inputNumber))
+                // While NumberCheck() is true, user cannot complete createAccount(), until it returns false.
                     {
                     Console.SetCursorPosition(0, 14);
                     Console.WriteLine("Invalid number! Please enter a valid number");
@@ -232,9 +291,9 @@ namespace assignment1
                     }
                 Console.SetCursorPosition(18, 11);
                 string inputEmail = Console.ReadLine();
-                double inputAccountBalance = 0.0;
-                int inputUserId = RandomNumberGenerator();
+                // Calls EmailCheck() to validate email.
                 while (EmailCheck(inputEmail))
+                // While EmailCheck() is true, user cannot complete createAccount(), until it returns false.
                     {
                     Console.SetCursorPosition(0, 14);
                     Console.WriteLine("Invalid email! Please enter a valid email");
@@ -244,17 +303,36 @@ namespace assignment1
                     Console.SetCursorPosition(18, 11);
                     inputEmail = Console.ReadLine();
                     }
-                CreateAccount(inputUserId, inputFname, inputLname, inputAddress, inputNumber, inputEmail, inputAccountBalance);
-                Console.WriteLine("Account Created! Press any key to go back to the menu.");
+                Console.WriteLine("Is the information correct (y/n)?");
+                if (ConfirmChoice())
+                    {
+                    // Uses all user inputs to call CreateAccount(), where an account will be created.
+                    CreateAccount(inputUserId, inputFname, inputLname, inputAddress, inputNumber, inputEmail, inputAccountBalance);
+                    Console.WriteLine("\n \nAccount Created! details will be provided via email.");
+                    // Confirms account creation through sending an email.
+                    Account account = new Account(inputUserId, inputAccountBalance, inputFname, inputLname, inputAddress, inputPNumber, inputEmail);
+                    account.AccountStatement();
+                    Console.WriteLine("\n Account number is: {0}", inputUserId);
+                    Console.ReadKey();
+                    menu();
+                    }
+                else
+                    {
+                    createForm();
+                    }
                 Console.ReadKey();
                 menu();
                 }
             }
 
         public void GetAccount()
+        // Using an existing Account Number, file is split into different variables.
             {
+            // Identify each line uniquely using an Array String.
             string[] lines = System.IO.File.ReadAllLines("accounts\\" + inputAccount + ".txt");
+            // Identify the specific line and split the line to obtain the correct variable.
             string[] detail = lines[0].Split('|');
+            // Assign each variable to their correpsonding value.
             int inputUserId = Convert.ToInt32(detail[1]);
             detail = lines[1].Split('|');
             inputFname = detail[1];
@@ -271,31 +349,40 @@ namespace assignment1
             }
 
         public bool EmailCheck(string email)
+        // Boolean function responsible for validating the email.
             {
+            // the string value of email must contain "@".
             if (email.Contains("@")) return false;
             else return true;
             }
 
         public bool NumberCheck(string phoneNumber)
+        // Boolean function responsible for validating the phone number.
             {
+            // the string length of phonenumber be less than 10.
             if (phoneNumber.Length < 10) return false;
             else return true;
             }
 
         public int RandomNumberGenerator()
+        // Function responsible for generating a random int for Account Number.
             {
+            // Generates a number within the given boundary.
             Random rnd = new Random();
             int number = rnd.Next(1000001, 9999999);
             return number;
             }
 
-        public bool SearchAccount()
+        public bool SearchAccount(string title)
+        // Function responsible For locating an account by Account Number if it exists.
+
             {
             Console.Clear();
-           
             Console.WriteLine("╔══════════════════════════════════════╗");
             Console.WriteLine("║                                      ║");
-            Console.WriteLine("║           SEARCH AN ACCOUNT          ║");
+            Console.Write("║           {0}                        ", title);
+            Console.SetCursorPosition(39, 2);
+            Console.WriteLine("║");
             Console.WriteLine("║                                      ║");
             Console.WriteLine("╠══════════════════════════════════════╣");
             Console.WriteLine("║          ENTER THE DETAILS           ║");
@@ -306,21 +393,27 @@ namespace assignment1
             Console.WriteLine("╚══════════════════════════════════════╝");
             Console.SetCursorPosition(27, 7);
             string input = Console.ReadLine();
+            // Creates an array string of account names
             string[] accounts = Directory.GetFiles("accounts");
             foreach (string i in accounts)
+            // Processes each value to check whether the input exists in the array string
                 {
                 if (i == "accounts\\" + input + ".txt")
                     {
+                    // If a file with the input value exists, then inputAccount is assigned to the searched value.
+                    // Returns true to show that the Function has successfully located an account.
                     int number = Convert.ToInt32(input);
                     inputAccount = input;
                     inputUserId = number;
                     return true;
                     }
                 }
+            // If function fails to locate an account with the input value, then no such file exists.
             return false;
             }
 
         public bool ErrorAccount()
+        // Called after SearchAccount() fails. Notifies user of failed search and promots user whether to attempt again or return back to menu.
             {
             Console.WriteLine("Account not found!");
             Console.WriteLine("Check another account (y/n)?");
@@ -347,6 +440,7 @@ namespace assignment1
             }
 
         public bool ConfirmChoice()
+        // Function Responsible to validate user's choice to complete a function.
             {
             while (true)
                 {
@@ -371,9 +465,12 @@ namespace assignment1
             }
 
         public void CreateAccount(int userId, string firstName, string lastName, string address, string phoneNumber, string email, double accountBalance)
+        // Function responsible for creating an account, using values from the user.
             {
+            // Creates a txt.file within the accounts folder.
             using (var text = new StreamWriter("accounts\\" + userId + ".txt"))
                 {
+                // Writes text in way that is always identical for each new value.
                 text.WriteLine("AccountNo|{0}", userId);
                 text.WriteLine("First Name|{0}", firstName);
                 text.WriteLine("Last Name|{0}", lastName);
@@ -387,12 +484,15 @@ namespace assignment1
         }
 
     internal class Account
+    // Relevent functions for a specifed account.
         {
         private string firstName, lastName, address, phoneNumber, email;
         private int userId;
         private double accountBalance;
+        private double amount;
 
         public Account(int tempUserId, double tempAccountBalance, string tempFirstName, string tempLastName, string tempAddress, string tempPhoneNumber, string tempEmail)
+        // Obtain values from the Person class and assigns it to relevent variables.
             {
             userId = tempUserId;
             accountBalance = tempAccountBalance;
@@ -404,6 +504,7 @@ namespace assignment1
             }
 
         public void AccountStatement()
+        // Function responsible for displaying all relevent data to the user.
             {
             Console.Clear();
             Console.WriteLine("╔═══════════════════════════════════════╗");
@@ -438,40 +539,66 @@ namespace assignment1
             Console.SetCursorPosition(0, 15);
             }
 
-        public void AccountDeposit(double amount)
+        public void AccountDeposit(double amt)
+        // Function responsible for computing the deposit function.
+
             {
+            // Calculates new account balance.
             double temp = accountBalance;
+            amount = amt;
+            string type = "deposit";
             accountBalance = temp + amount;
+            // Line of string to replace the original line.
             string text = "Balance|" + accountBalance;
+            // Locates the correct file to update.
             string[] lines = System.IO.File.ReadAllLines("accounts\\" + userId + ".txt");
             lines[6] = text;
+            // Overwrites the original line with a new string of text that includes the updated account balance.
             File.WriteAllLines("accounts\\" + userId + ".txt", lines);
-
+            updateTransaction(type);
             }
 
-        public void AccountWithdraw(double amount)
+        public void AccountWithdraw(double amt)
+        // Function responsible for computing the withdraw function.
             {
             double temp = accountBalance;
+            amount = amt;
+            string type = "withdraw";
             accountBalance = temp - amount;
+            // Line of string to replace the original line.
             string text = "Balance|" + accountBalance;
+            // Locates the correct file to update.
             string[] lines = System.IO.File.ReadAllLines("accounts\\" + userId + ".txt");
             lines[6] = text;
+            // Overwrites the original line with a new string of text that includes the updated account balance.
             File.WriteAllLines("accounts\\" + userId + ".txt", lines);
+            updateTransaction(type);
+
             }
 
         public void SendEmail()
+        // Function responsible for sending an email containing the account statment.
+
             {
+            // Assigning the recipant email.
             MailAddress to = new MailAddress(email);
-            MailAddress from = new MailAddress("adminKen@net.com");
+            MailAddress from = new MailAddress("kphetmany@gmail.com");
             MailMessage message = new MailMessage(from, to);
-            string htmlString = "Here is your Bank Statement: \n \n Account Number:" + userId + "\n Account Balance: " + accountBalance + "\n First Name: " + firstName + "\n Last Name: " + lastName + "\n Address: " + address + "\n Phone Number: " + phoneNumber;
+            // Body and Subject of the email being sent.
+            string htmlString = "Here is your Bank Statement: \n \n Account Number:" + userId + "\n Account Balance: $" + accountBalance + "\n First Name: " + firstName + "\n Last Name: " + lastName + "\n Address: " + address + "\n Phone Number: " + phoneNumber;
             message.Subject = "A/C Bank Statement";
             message.Body = htmlString;
-            SmtpClient client = new SmtpClient("smtp.server.address", 2525);
-            client.UseDefaultCredentials = true;
+            // Password to authorize sending the email.
+            string password = "DotNet123";
+            // SmptpClient is used to send the email.
+            SmtpClient smtpServer = new SmtpClient("smtp.gmail.com");
+            smtpServer.Port = 25;
+            smtpServer.Credentials = new System.Net.NetworkCredential("dotnetappken@gmail.com", password);
+            smtpServer.EnableSsl = true;
             try
                 {
-                client.Send(message);
+                // Request to send the email.
+                smtpServer.Send(message);
                 }
             catch (Exception e)
                 {
@@ -481,17 +608,36 @@ namespace assignment1
             }
 
         public void AccountDelete()
+        // Function responsible for deleting the file.
             {
+            // Delete the file based on the location of the file.
             File.Delete("accounts\\" + userId + ".txt");
+            }
+
+        public void updateTransaction(string type)
+        // Function responsible for recording a history of transactions whether depositing or withdrawing. 
+            {
+            // obtains current date.
+            string date = DateTime.Now.ToString("dd.MM.yyyy");
+                {
+                using (StreamWriter writer = new StreamWriter("accounts\\" + userId + ".txt", true))
+                    {
+                    // Appends to the text file, adding a new line of text.
+                    writer.Write("{0}|{1}|{2}|{3}", date, type, amount, accountBalance);
+                    writer.Close();
+                    }
+                }
             }
         }
 
     internal class UserLogin
+    // Relevent functions for user to login.
         {
         private string userInput;
         private string passInput;
 
         public void LoginScreen()
+        // Function responsbile to display login screen and obtain user values.
             {
             Console.Clear();
             Console.WriteLine("╔══════════════════════════════════════╗");
@@ -509,22 +655,33 @@ namespace assignment1
             Console.SetCursorPosition(21, 5);
             passInput = Console.ReadLine();
             Console.SetCursorPosition(3, 8);
-            Login();
-            }
-
-        public void Login()
-            {
-            string[] splits = System.IO.File.ReadAllText("login.txt").Split('|');
-            if (userInput == splits[0] && passInput == splits[1])
+            // Uses values to attempt to log in.
+            if (Login())
                 {
-                Person test = new Person();
-                test.menu();
+                Console.WriteLine("Valid Credentials!... Please enter");
+                Console.ReadKey();
+                Person person = new Person();
+                person.menu();
                 }
             else
                 {
                 Console.WriteLine("Incorrect details! Please try again");
                 Console.ReadKey();
                 LoginScreen();
+                }
+            }
+
+        public bool Login()
+        // Function responsible for checking that the credentials are correct.
+            {
+            string[] splits = System.IO.File.ReadAllText("login.txt").Split('|');
+            if (userInput == splits[0] && passInput == splits[1])
+                {
+                return true;
+                }
+            else
+                {
+                return false;
                 }
             }
         }
