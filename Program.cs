@@ -1,11 +1,15 @@
 ﻿using System;
 using System.IO;
+using System.Net.Mail;
 
 namespace assignment1
     {
     internal class Person
         {
         private string inputAccount;
+        private int inputUserId;
+        private string inputFname, inputLname, inputAddress, inputEmail, inputPNumber;
+        private double inputAccountBalance;
 
         public void menu()
             {
@@ -26,8 +30,7 @@ namespace assignment1
             Console.SetCursorPosition(18, 11);
             while (true)
                 {
-                try
-                    {
+                    
                     int inputChoice = Convert.ToInt32(Console.ReadLine());
                     switch (inputChoice)
                         {
@@ -59,36 +62,19 @@ namespace assignment1
                             exitAccount();
                             break;
                         }
-                    }
-                catch (Exception e)
-                    {
-                    Console.WriteLine("Please enter a number within 1-7!");
-                    Console.ReadKey();
-                    menu();
-                    }
+                    
                 }
 
             void displayAccountDetails()
                 {
                 if (SearchAccount())
                     {
-                    string[] lines = System.IO.File.ReadAllLines("accounts\\" + inputAccount + ".txt");
-                    string[] detail = lines[0].Split('|');
-                    int inputUserId = Convert.ToInt32(detail[1]);
-                    detail = lines[1].Split('|');
-                    string inputFname = detail[1];
-                    detail = lines[2].Split('|');
-                    string inputLname = detail[1];
-                    detail = lines[3].Split('|');
-                    string inputAddress = detail[1];
-                    detail = lines[4].Split('|');
-                    int inputPNumber = Convert.ToInt32(detail[1]);
-                    detail = lines[5].Split('|');
-                    string inputEmail = detail[1];
-                    detail = lines[6].Split('|');
-                    double inputAccountBalance = Convert.ToInt32(detail[1]);
+                    GetAccount();
                     Account account = new Account(inputUserId, inputAccountBalance, inputFname, inputLname, inputAddress, inputPNumber, inputEmail);
                     account.AccountStatement();
+                    Console.WriteLine("Enter any key to go back to menu!");
+                    Console.ReadKey();
+                    menu();
                     }
                 else
                 if (ErrorAccount())
@@ -101,8 +87,19 @@ namespace assignment1
                 {
                 if (SearchAccount())
                     {
-                    Console.WriteLine("I would deposit money");
-                    //int inputAmount = Convert.ToInt32(Console.ReadLine());
+                    Console.SetCursorPosition(0, 11);
+                    Console.WriteLine("Account found! Enter the amount...");
+                    Console.SetCursorPosition(0, 8);
+                    Console.WriteLine("║          Amount : $                  ║");
+                    Console.SetCursorPosition(21, 8);
+                    double inputAmount = Convert.ToInt32(Console.ReadLine());
+                    GetAccount();
+                    Account account = new Account(inputUserId, inputAccountBalance, inputFname, inputLname, inputAddress, inputPNumber, inputEmail);
+                    account.AccountDeposit(inputAmount);
+                    Console.WriteLine("Deposit Successful!");
+                    Console.ReadKey();
+                    menu();
+
                     }
                 else
                 if (ErrorAccount())
@@ -115,9 +112,18 @@ namespace assignment1
                 {
                 if (SearchAccount())
                     {
-                    Console.WriteLine("I would Withdraw money");
-                    //Console.WriteLine("Amount: $");
-                    //int inputAmount = Convert.ToInt32(Console.ReadLine());
+                    Console.SetCursorPosition(0, 11);
+                    Console.WriteLine("Account found! Enter the amount...");
+                    Console.SetCursorPosition(0, 8);
+                    Console.WriteLine("║          Amount : $                  ║");
+                    Console.SetCursorPosition(21, 8);
+                    double inputAmount = Convert.ToInt32(Console.ReadLine());
+                    GetAccount();
+                    Account account = new Account(inputUserId, inputAccountBalance, inputFname, inputLname, inputAddress, inputPNumber, inputEmail);
+                    account.AccountWithdraw(inputAmount);
+                    Console.WriteLine("Withdraw Successful!");
+                    Console.ReadKey();
+                    menu();
                     }
                 else
                 if (ErrorAccount())
@@ -131,7 +137,19 @@ namespace assignment1
                 {
                 if (SearchAccount())
                     {
-                    Console.WriteLine("I would Send Statement");
+                    GetAccount();
+                    Account account = new Account(inputUserId, inputAccountBalance, inputFname, inputLname, inputAddress, inputPNumber, inputEmail);
+                    account.AccountStatement();
+                    Console.WriteLine("Send Email (y/n)?");
+                    Console.SetCursorPosition(22, 15);
+                    if (ConfirmChoice())
+                        {
+                        account.SendEmail();
+                        Console.SetCursorPosition(0, 17);
+                        Console.WriteLine("Email sent successfully!...");
+                        Console.ReadKey();
+                        menu();
+                        }
                     }
                 else
                 if (ErrorAccount())
@@ -145,7 +163,23 @@ namespace assignment1
                 {
                 if (SearchAccount())
                     {
-                    Console.WriteLine("I would Delete Account");
+                    GetAccount();
+                    Account account = new Account(inputUserId, inputAccountBalance, inputFname, inputLname, inputAddress, inputPNumber, inputEmail);
+                    account.AccountStatement();
+                    Console.WriteLine("Delete Account (y/n)?");
+                    Console.SetCursorPosition(22, 15);
+                    if (ConfirmChoice())
+                        {
+                        account.AccountDelete();
+                        Console.SetCursorPosition(0, 17);
+                        Console.WriteLine("Account Deleted...");
+                        Console.ReadKey();
+                        menu();
+                        }
+                    else
+                        {
+                        menu();
+                        }
                     }
                 else
                 if (ErrorAccount())
@@ -217,6 +251,25 @@ namespace assignment1
                 }
             }
 
+        public void GetAccount()
+            {
+            string[] lines = System.IO.File.ReadAllLines("accounts\\" + inputAccount + ".txt");
+            string[] detail = lines[0].Split('|');
+            int inputUserId = Convert.ToInt32(detail[1]);
+            detail = lines[1].Split('|');
+            inputFname = detail[1];
+            detail = lines[2].Split('|');
+            inputLname = detail[1];
+            detail = lines[3].Split('|');
+            inputAddress = detail[1];
+            detail = lines[4].Split('|');
+            inputPNumber = detail[1];
+            detail = lines[5].Split('|');
+            inputEmail = detail[1];
+            detail = lines[6].Split('|');
+            inputAccountBalance = Convert.ToInt32(detail[1]);
+            }
+
         public bool EmailCheck(string email)
             {
             if (email.Contains("@")) return false;
@@ -239,6 +292,7 @@ namespace assignment1
         public bool SearchAccount()
             {
             Console.Clear();
+           
             Console.WriteLine("╔══════════════════════════════════════╗");
             Console.WriteLine("║                                      ║");
             Console.WriteLine("║           SEARCH AN ACCOUNT          ║");
@@ -248,6 +302,7 @@ namespace assignment1
             Console.WriteLine("║                                      ║");
             Console.WriteLine("║          Account Number:             ║");
             Console.WriteLine("║                                      ║");
+            Console.WriteLine("║                                      ║");
             Console.WriteLine("╚══════════════════════════════════════╝");
             Console.SetCursorPosition(27, 7);
             string input = Console.ReadLine();
@@ -256,7 +311,9 @@ namespace assignment1
                 {
                 if (i == "accounts\\" + input + ".txt")
                     {
+                    int number = Convert.ToInt32(input);
                     inputAccount = input;
+                    inputUserId = number;
                     return true;
                     }
                 }
@@ -267,6 +324,30 @@ namespace assignment1
             {
             Console.WriteLine("Account not found!");
             Console.WriteLine("Check another account (y/n)?");
+            while (true)
+                {
+                try
+                    {
+                    string inputChoice = Console.ReadLine();
+                    switch (inputChoice)
+                        {
+                        case "y":
+                            return true;
+
+                        case "n":
+                            return false;
+                        }
+                    }
+                catch (Exception e)
+                    {
+                    Console.WriteLine(e);
+                    Console.ReadKey();
+                    }
+                }
+            }
+
+        public bool ConfirmChoice()
+            {
             while (true)
                 {
                 try
@@ -307,11 +388,11 @@ namespace assignment1
 
     internal class Account
         {
-        private string firstName, lastName, address, email;
-        private int phoneNumber, userId;
+        private string firstName, lastName, address, phoneNumber, email;
+        private int userId;
         private double accountBalance;
 
-        public Account(int tempUserId, double tempAccountBalance, string tempFirstName, string tempLastName, string tempAddress, int tempPhoneNumber, string tempEmail)
+        public Account(int tempUserId, double tempAccountBalance, string tempFirstName, string tempLastName, string tempAddress, string tempPhoneNumber, string tempEmail)
             {
             userId = tempUserId;
             accountBalance = tempAccountBalance;
@@ -355,22 +436,53 @@ namespace assignment1
             Console.SetCursorPosition(15, 12);
             Console.Write(email);
             Console.SetCursorPosition(0, 15);
-            Console.WriteLine("Enter any key to go back to menu!");
-            Console.ReadKey();
-            Person person = new Person();
-            person.menu();
             }
 
         public void AccountDeposit(double amount)
             {
             double temp = accountBalance;
             accountBalance = temp + amount;
+            string text = "Balance|" + accountBalance;
+            string[] lines = System.IO.File.ReadAllLines("accounts\\" + userId + ".txt");
+            lines[6] = text;
+            File.WriteAllLines("accounts\\" + userId + ".txt", lines);
+
             }
 
         public void AccountWithdraw(double amount)
             {
             double temp = accountBalance;
             accountBalance = temp - amount;
+            string text = "Balance|" + accountBalance;
+            string[] lines = System.IO.File.ReadAllLines("accounts\\" + userId + ".txt");
+            lines[6] = text;
+            File.WriteAllLines("accounts\\" + userId + ".txt", lines);
+            }
+
+        public void SendEmail()
+            {
+            MailAddress to = new MailAddress(email);
+            MailAddress from = new MailAddress("adminKen@net.com");
+            MailMessage message = new MailMessage(from, to);
+            string htmlString = "Here is your Bank Statement: \n \n Account Number:" + userId + "\n Account Balance: " + accountBalance + "\n First Name: " + firstName + "\n Last Name: " + lastName + "\n Address: " + address + "\n Phone Number: " + phoneNumber;
+            message.Subject = "A/C Bank Statement";
+            message.Body = htmlString;
+            SmtpClient client = new SmtpClient("smtp.server.address", 2525);
+            client.UseDefaultCredentials = true;
+            try
+                {
+                client.Send(message);
+                }
+            catch (Exception e)
+                {
+                Console.WriteLine("Exception caught in CreateTestMessage2(): {0}",
+                    e.ToString());
+                }
+            }
+
+        public void AccountDelete()
+            {
+            File.Delete("accounts\\" + userId + ".txt");
             }
         }
 

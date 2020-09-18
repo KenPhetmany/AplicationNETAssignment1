@@ -1,0 +1,7 @@
+AccountNo|9770766
+First Name|Ken 
+Last Name|Phetmany
+Address|UTS
+Phone|04217123
+Email|kphetmany@gmail.com
+Balance|0

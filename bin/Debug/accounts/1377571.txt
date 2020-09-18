@@ -1,0 +1,7 @@
+AccountNo|1377571
+First Name|1
+Last Name|1
+Address|1
+Phone|1
+Email|@
+Balance|500
