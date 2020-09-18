@@ -1,0 +1,8 @@
+AccountNo|3023883
+First Name|ken
+Last Name|phetmany
+Address|second test
+Phone|11111
+Email|kphetmany@gmail.com
+Balance|300
+19.09.2020|deposit|300|300

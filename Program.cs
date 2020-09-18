@@ -7,7 +7,7 @@ namespace assignment1
     internal class Person
         {
         private string inputAccount;
-        private int inputUserId;
+        private int inputUserId, menuChoice;
         private string inputFname, inputLname, inputAddress, inputEmail, inputPNumber;
         private double inputAccountBalance;
 
@@ -16,24 +16,26 @@ namespace assignment1
             {
             Console.Clear();
             Console.WriteLine("╔════════════════════════════════════╗");
-            Console.WriteLine("║  WELCOME TO SIMPLE BANKING SYSTEM  ║");
-            Console.WriteLine("╠════════════════════════════════════╣");
-            Console.WriteLine("║     1. Create a new account        ║");
-            Console.WriteLine("║     2. Search for an account       ║");
-            Console.WriteLine("║     3. Deposit                     ║");
-            Console.WriteLine("║     4. Withdraw                    ║");
-            Console.WriteLine("║     5. A/C Statement               ║");
-            Console.WriteLine("║     6. Delete Account              ║");
-            Console.WriteLine("║     7. Exit                        ║");
-            Console.WriteLine("╠════════════════════════════════════╣");
-            Console.WriteLine("║   Enter Number:                    ║");
+            Console.WriteLine("|  WELCOME TO SIMPLE BANKING SYSTEM  |");
+            Console.WriteLine("|════════════════════════════════════|");
+            Console.WriteLine("|     1. Create a new account        |");
+            Console.WriteLine("|     2. Search for an account       |");
+            Console.WriteLine("|     3. Deposit                     |");
+            Console.WriteLine("|     4. Withdraw                    |");
+            Console.WriteLine("|     5. A/C Statement               |");
+            Console.WriteLine("|     6. Delete Account              |");
+            Console.WriteLine("|     7. Exit                        |");
+            Console.WriteLine("|════════════════════════════════════|");
+            Console.WriteLine("|   Enter Number:                    |");
             Console.WriteLine("╚════════════════════════════════════╝");
             Console.SetCursorPosition(18, 11);
             string input = Console.ReadLine();
+            // Need to validate user input, to ensure it is within acceptible bounds.
+            validateMenuChoice();
             while (true)
             // User has to enter a number between 1-7 in order to use a specific feature.
                 {
-                try
+                if (validateMenuChoice())
                     {
                     switch (Convert.ToInt32(input))
                         {
@@ -66,13 +68,8 @@ namespace assignment1
                             break;
                         }
                     }
-                catch (Exception e)
-                    {
-                    Console.WriteLine("Invalid Inputs! Please enter a number within 1-7");
-                    Console.ReadKey();
-                    menu();
-                    }
                 }
+
             // Nearly all functions will involve the bool SearchAccount(), GetAccount() and bool ErrorAccount() to remove repetitve code.
             void displayAccountDetails()
             // Function responsible in showing the statement of an existing account.
@@ -91,14 +88,16 @@ namespace assignment1
                     menu();
                     }
                 else
-                // If SearchAccount() returns False, ErrorAccount is invoked (Function failed in locating the account).
-                if (ErrorAccount())
+                Console.WriteLine("Account not found!");
+                Console.WriteLine("Check another account (y/n)?");
+                if (ConfirmChoice())
                 // Await's user response to attempt the function again, otherwise return menu.
                     {
                     displayAccountDetails();
                     }
                 else menu();
                 }
+
             void depositAccount()
             // Function responsible for depositing money to an existing account.
                 {
@@ -110,7 +109,7 @@ namespace assignment1
                     Console.SetCursorPosition(0, 11);
                     Console.WriteLine("Account found! Enter the amount...");
                     Console.SetCursorPosition(0, 8);
-                    Console.WriteLine("║          Amount : $                  ║");
+                    Console.WriteLine("|          Amount : $                  |");
                     Console.SetCursorPosition(21, 8);
                     // User attempts to input the value as a double type.
                     double inputAmount = Convert.ToInt32(Console.ReadLine());
@@ -124,14 +123,16 @@ namespace assignment1
                     menu();
                     }
                 else
-                // If SearchAccount() returns False, ErrorAccount is invoked (Function failed in locating the account).
-                if (ErrorAccount())
+                Console.WriteLine("Account not found!");
+                Console.WriteLine("Check another account (y/n)?");
+                if (ConfirmChoice())
                 // Await's user response to attempt the function again, otherwise return menu.
                     {
                     depositAccount();
                     }
                 else menu();
                 }
+
             void withdrawAcount()
             // Function responsible for withdrawing money to an existing account.
                 {
@@ -157,8 +158,9 @@ namespace assignment1
                     menu();
                     }
                 else
-                // If SearchAccount() returns False, ErrorAccount is invoked (Function failed in locating the account).
-                if (ErrorAccount())
+                    Console.WriteLine("Account not found!");
+                Console.WriteLine("Check another account (y/n)?");
+                if (ConfirmChoice())
                 // Await's user response to attempt the function again, otherwise return menu.
                     {
                     withdrawAcount();
@@ -166,6 +168,7 @@ namespace assignment1
                 else menu();
                 Console.ReadKey();
                 }
+
             void emailAccountStatement()
             // Function responsible for sending an account statment.
                 {
@@ -195,14 +198,16 @@ namespace assignment1
                         }
                     }
                 else
-                // If SearchAccount() returns false, ErrorAccount is invoked (Function failed in locating the account).
-                if (ErrorAccount())
+                Console.WriteLine("Account not found!");
+                Console.WriteLine("Check another account (y/n)?"); 
+                if (ConfirmChoice())
                     {
                     emailAccountStatement();
                     }
                 else menu();
                 Console.ReadKey();
                 }
+
             void deleteAccount()
             // Function responsible for deleting an existing account
                 {
@@ -233,18 +238,45 @@ namespace assignment1
                     }
                 // If SearchAccount() returns false, ErrorAccount is invoked (Function failed in locating the account).
                 else
-                if (ErrorAccount())
+                Console.WriteLine("Account not found!");
+                Console.WriteLine("Check another account (y/n)?");
+                if (ConfirmChoice())
                     {
                     deleteAccount();
                     }
                 else menu();
                 Console.ReadKey();
                 }
+
             void exitAccount()
             // Function responsible for closing the program.
                 {
                 Console.Clear();
                 System.Environment.Exit(1);
+                }
+
+            bool validateMenuChoice()
+            // Function responsible for validating menu choice.
+                {
+                try
+                    {
+                    menuChoice = Convert.ToInt32(input);
+                    if (menuChoice > 7)
+                        {
+                        Console.WriteLine("Invalid input. Please enter a number between 1-7!");
+                        Console.ReadKey();
+                        menu();
+                        return false;
+                        }
+                    else return true;
+                    }
+                catch (Exception e)
+                    {
+                    Console.WriteLine("Invalid input. Please enter a number between 1-7!");
+                    Console.ReadKey();
+                    menu();
+                    return false;
+                    }
                 }
 
             void createForm()
@@ -254,18 +286,18 @@ namespace assignment1
                 // Collects all user inputs.
                 Console.Clear();
                 Console.WriteLine("╔══════════════════════════════════════╗");
-                Console.WriteLine("║                                      ║");
-                Console.WriteLine("║         CREATE A NEW ACCOUNT         ║");
-                Console.WriteLine("║                                      ║");
-                Console.WriteLine("╠══════════════════════════════════════╣");
-                Console.WriteLine("║          ENTER THE DETAILS           ║");
-                Console.WriteLine("║                                      ║");
-                Console.WriteLine("║          First Name:                 ║");
-                Console.WriteLine("║          Last Name:                  ║");
-                Console.WriteLine("║          Address:                    ║");
-                Console.WriteLine("║          Phone:                      ║");
-                Console.WriteLine("║          Email:                      ║");
-                Console.WriteLine("║                                      ║");
+                Console.WriteLine("|                                      |");
+                Console.WriteLine("|         CREATE A NEW ACCOUNT         |");
+                Console.WriteLine("|                                      |");
+                Console.WriteLine("|══════════════════════════════════════|");
+                Console.WriteLine("|          ENTER THE DETAILS           |");
+                Console.WriteLine("|                                      |");
+                Console.WriteLine("|          First Name:                 |");
+                Console.WriteLine("|          Last Name:                  |");
+                Console.WriteLine("|          Address:                    |");
+                Console.WriteLine("|          Phone:                      |");
+                Console.WriteLine("|          Email:                      |");
+                Console.WriteLine("|                                      |");
                 Console.WriteLine("╚══════════════════════════════════════╝");
                 double inputAccountBalance = 0.0;
                 int inputUserId = RandomNumberGenerator();
@@ -285,7 +317,7 @@ namespace assignment1
                     Console.WriteLine("Invalid number! Please enter a valid number");
                     Console.ReadKey();
                     Console.SetCursorPosition(0, 10);
-                    Console.WriteLine("║          Phone:                      ║");
+                    Console.WriteLine("|          Phone:                      |");
                     Console.SetCursorPosition(18, 10);
                     inputNumber = Console.ReadLine();
                     }
@@ -299,10 +331,11 @@ namespace assignment1
                     Console.WriteLine("Invalid email! Please enter a valid email");
                     Console.ReadKey();
                     Console.SetCursorPosition(0, 11);
-                    Console.WriteLine("║          Email:                      ║");
+                    Console.WriteLine("|          Email:                      |");
                     Console.SetCursorPosition(18, 11);
                     inputEmail = Console.ReadLine();
                     }
+                Console.SetCursorPosition(0, 16);
                 Console.WriteLine("Is the information correct (y/n)?");
                 if (ConfirmChoice())
                     {
@@ -311,7 +344,7 @@ namespace assignment1
                     Console.WriteLine("\n \nAccount Created! details will be provided via email.");
                     // Confirms account creation through sending an email.
                     Account account = new Account(inputUserId, inputAccountBalance, inputFname, inputLname, inputAddress, inputPNumber, inputEmail);
-                    account.AccountStatement();
+                    account.SendEmail();
                     Console.WriteLine("\n Account number is: {0}", inputUserId);
                     Console.ReadKey();
                     menu();
@@ -333,7 +366,7 @@ namespace assignment1
             // Identify the specific line and split the line to obtain the correct variable.
             string[] detail = lines[0].Split('|');
             // Assign each variable to their correpsonding value.
-            int inputUserId = Convert.ToInt32(detail[1]);
+            inputUserId = Convert.ToInt32(detail[1]);
             detail = lines[1].Split('|');
             inputFname = detail[1];
             detail = lines[2].Split('|');
@@ -379,64 +412,37 @@ namespace assignment1
             {
             Console.Clear();
             Console.WriteLine("╔══════════════════════════════════════╗");
-            Console.WriteLine("║                                      ║");
-            Console.Write("║           {0}                        ", title);
+            Console.WriteLine("|                                      |");
+            Console.Write("|           {0}                        ", title);
             Console.SetCursorPosition(39, 2);
-            Console.WriteLine("║");
-            Console.WriteLine("║                                      ║");
-            Console.WriteLine("╠══════════════════════════════════════╣");
-            Console.WriteLine("║          ENTER THE DETAILS           ║");
-            Console.WriteLine("║                                      ║");
-            Console.WriteLine("║          Account Number:             ║");
-            Console.WriteLine("║                                      ║");
-            Console.WriteLine("║                                      ║");
+            Console.WriteLine("|");
+            Console.WriteLine("|                                      |");
+            Console.WriteLine("|══════════════════════════════════════|");
+            Console.WriteLine("|          ENTER THE DETAILS           |");
+            Console.WriteLine("|                                      |");
+            Console.WriteLine("|          Account Number:             |");
+            Console.WriteLine("|                                      |");
+            Console.WriteLine("|                                      |");
             Console.WriteLine("╚══════════════════════════════════════╝");
             Console.SetCursorPosition(27, 7);
-            string input = Console.ReadLine();
+            string searchInput = Console.ReadLine();
             // Creates an array string of account names
             string[] accounts = Directory.GetFiles("accounts");
             foreach (string i in accounts)
             // Processes each value to check whether the input exists in the array string
                 {
-                if (i == "accounts\\" + input + ".txt")
+                if (i == "accounts\\" + searchInput + ".txt")
                     {
                     // If a file with the input value exists, then inputAccount is assigned to the searched value.
                     // Returns true to show that the Function has successfully located an account.
-                    int number = Convert.ToInt32(input);
-                    inputAccount = input;
+                    int number = Convert.ToInt32(searchInput);
+                    inputAccount = searchInput;
                     inputUserId = number;
                     return true;
                     }
                 }
             // If function fails to locate an account with the input value, then no such file exists.
             return false;
-            }
-
-        public bool ErrorAccount()
-        // Called after SearchAccount() fails. Notifies user of failed search and promots user whether to attempt again or return back to menu.
-            {
-            Console.WriteLine("Account not found!");
-            Console.WriteLine("Check another account (y/n)?");
-            while (true)
-                {
-                try
-                    {
-                    string inputChoice = Console.ReadLine();
-                    switch (inputChoice)
-                        {
-                        case "y":
-                            return true;
-
-                        case "n":
-                            return false;
-                        }
-                    }
-                catch (Exception e)
-                    {
-                    Console.WriteLine(e);
-                    Console.ReadKey();
-                    }
-                }
             }
 
         public bool ConfirmChoice()
@@ -488,8 +494,7 @@ namespace assignment1
         {
         private string firstName, lastName, address, phoneNumber, email;
         private int userId;
-        private double accountBalance;
-        private double amount;
+        private double accountBalance, amount;
 
         public Account(int tempUserId, double tempAccountBalance, string tempFirstName, string tempLastName, string tempAddress, string tempPhoneNumber, string tempEmail)
         // Obtain values from the Person class and assigns it to relevent variables.
@@ -508,19 +513,19 @@ namespace assignment1
             {
             Console.Clear();
             Console.WriteLine("╔═══════════════════════════════════════╗");
-            Console.WriteLine("║                                       ║");
-            Console.WriteLine("║            ACCOUNT DETAILS            ║");
-            Console.WriteLine("║                                       ║");
-            Console.WriteLine("╠═══════════════════════════════════════╣");
-            Console.WriteLine("║                                       ║");
-            Console.WriteLine("║       Account No:                     ║");
-            Console.WriteLine("║       Account Balance: $              ║");
-            Console.WriteLine("║       First Name:                     ║");
-            Console.WriteLine("║       Last Name:                      ║");
-            Console.WriteLine("║       Address:                        ║");
-            Console.WriteLine("║       Phone:                          ║");
-            Console.WriteLine("║       Email:                          ║");
-            Console.WriteLine("║                                       ║");
+            Console.WriteLine("|                                       |");
+            Console.WriteLine("|            ACCOUNT DETAILS            |");
+            Console.WriteLine("|                                       |");
+            Console.WriteLine("|═══════════════════════════════════════|");
+            Console.WriteLine("|                                       |");
+            Console.WriteLine("|       Account No:                     |");
+            Console.WriteLine("|       Account Balance: $              |");
+            Console.WriteLine("|       First Name:                     |");
+            Console.WriteLine("|       Last Name:                      |");
+            Console.WriteLine("|       Address:                        |");
+            Console.WriteLine("|       Phone:                          |");
+            Console.WriteLine("|       Email:                          |");
+            Console.WriteLine("|                                       |");
             Console.WriteLine("╚═══════════════════════════════════════╝");
             Console.SetCursorPosition(20, 6);
             Console.Write(userId);
@@ -573,7 +578,6 @@ namespace assignment1
             // Overwrites the original line with a new string of text that includes the updated account balance.
             File.WriteAllLines("accounts\\" + userId + ".txt", lines);
             updateTransaction(type);
-
             }
 
         public void SendEmail()
@@ -602,8 +606,7 @@ namespace assignment1
                 }
             catch (Exception e)
                 {
-                Console.WriteLine("Exception caught in CreateTestMessage2(): {0}",
-                    e.ToString());
+                Console.WriteLine("Exception caught in CreateTestMessage2(): {0}", e.ToString());
                 }
             }
 
@@ -615,7 +618,7 @@ namespace assignment1
             }
 
         public void updateTransaction(string type)
-        // Function responsible for recording a history of transactions whether depositing or withdrawing. 
+        // Function responsible for recording a history of transactions whether depositing or withdrawing.
             {
             // obtains current date.
             string date = DateTime.Now.ToString("dd.MM.yyyy");
@@ -633,31 +636,62 @@ namespace assignment1
     internal class UserLogin
     // Relevent functions for user to login.
         {
-        private string userInput;
-        private string passInput;
+        private string userInput, passInput;
 
         public void LoginScreen()
-        // Function responsbile to display login screen and obtain user values.
+        // Function respsonsible to display login screen and obtain user values.
             {
             Console.Clear();
             Console.WriteLine("╔══════════════════════════════════════╗");
-            Console.WriteLine("║                                      ║");
-            Console.WriteLine("║  WELCOME TO SIMPLE BANKING SYSTEM    ║");
-            Console.WriteLine("║                                      ║");
-            Console.WriteLine("╠══════════════════════════════════════╣");
-            Console.WriteLine("║          LOGIN TO START              ║");
-            Console.WriteLine("║          Username:                   ║");
-            Console.WriteLine("║          Password:                   ║");
-            Console.WriteLine("║                                      ║");
+            Console.WriteLine("|                                      |");
+            Console.WriteLine("|  WELCOME TO SIMPLE BANKING SYSTEM    |");
+            Console.WriteLine("|                                      |");
+            Console.WriteLine("|══════════════════════════════════════|");
+            Console.WriteLine("|          LOGIN TO START              |");
+            Console.WriteLine("|          Username:                   |");
+            Console.WriteLine("|          Password:                   |");
+            Console.WriteLine("|                                      |");
             Console.WriteLine("╚══════════════════════════════════════╝");
-            Console.SetCursorPosition(21, 4);
+            Console.SetCursorPosition(21, 6);
             userInput = Console.ReadLine();
-            Console.SetCursorPosition(21, 5);
-            passInput = Console.ReadLine();
-            Console.SetCursorPosition(3, 8);
-            // Uses values to attempt to log in.
-            if (Login())
+            Console.SetCursorPosition(21, 7);
+            MaskPassword();
+            }
+
+        public void MaskPassword()
+        // Function respsonsible to mask the password with a "*"
+            {
+            while (true)
                 {
+                // Create a new variable that reads invidual keys. Depending on what key is pressed, certain actions will occur
+                var character = Console.ReadKey(true);
+                if (character.Key == ConsoleKey.Enter)
+                // On clicking the "Enter" key, Login() will be called.
+                    {
+                    Login();
+                    }
+                if (character.Key == ConsoleKey.Backspace && passInput.Length > 0)
+                    {
+                    // On clicking "Backspace", as long as password is more than 0, the length of * will decrease by 1 as well as the length of password.
+                    Console.Write("\b \b");
+                    passInput = passInput.Remove(passInput.Length - 1);
+                    }
+                else
+                // When clicking any other key, this will add the input character to the password and add to the number of * displaying.
+                    {
+                    passInput += character.KeyChar;
+                    Console.Write("*");
+                    }
+                }
+            }
+
+        public void Login()
+        // Function responsible for checking that the credentials are correct.
+            {
+            string[] splits = System.IO.File.ReadAllText("login.txt").Split('|');
+            if (userInput == splits[0] && passInput == splits[1])
+                {
+                Console.SetCursorPosition(0, 11);
                 Console.WriteLine("Valid Credentials!... Please enter");
                 Console.ReadKey();
                 Person person = new Person();
@@ -665,23 +699,12 @@ namespace assignment1
                 }
             else
                 {
+                Console.SetCursorPosition(0, 10);
                 Console.WriteLine("Incorrect details! Please try again");
+                userInput = string.Empty;
+                passInput = string.Empty;
                 Console.ReadKey();
                 LoginScreen();
-                }
-            }
-
-        public bool Login()
-        // Function responsible for checking that the credentials are correct.
-            {
-            string[] splits = System.IO.File.ReadAllText("login.txt").Split('|');
-            if (userInput == splits[0] && passInput == splits[1])
-                {
-                return true;
-                }
-            else
-                {
-                return false;
                 }
             }
         }
@@ -690,8 +713,8 @@ namespace assignment1
         {
         private static void Main(string[] args)
             {
-            Person person = new Person();
-            person.menu();
+            UserLogin login = new UserLogin();
+            login.LoginScreen();
             }
         }
     }
