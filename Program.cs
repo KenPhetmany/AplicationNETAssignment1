@@ -4,6 +4,96 @@ using System.Net.Mail;
 
 namespace assignment1
     {
+    internal class Program
+        {
+        private static void Main(string[] args)
+            {
+            UserLogin login = new UserLogin();
+            login.LoginScreen();
+            }
+        }
+
+    internal class UserLogin
+    // Relevent functions for user to login.
+        {
+        private string userInput, passInput;
+
+        public void LoginScreen()
+        // Function respsonsible to display login screen and obtain user values.
+            {
+            Console.Clear();
+            Console.WriteLine("╔══════════════════════════════════════╗");
+            Console.WriteLine("|                                      |");
+            Console.WriteLine("|  WELCOME TO SIMPLE BANKING SYSTEM    |");
+            Console.WriteLine("|                                      |");
+            Console.WriteLine("|══════════════════════════════════════|");
+            Console.WriteLine("|          LOGIN TO START              |");
+            Console.WriteLine("|          Username:                   |");
+            Console.WriteLine("|          Password:                   |");
+            Console.WriteLine("|                                      |");
+            Console.WriteLine("╚══════════════════════════════════════╝");
+            Console.SetCursorPosition(21, 6);
+            userInput = Console.ReadLine();
+            Console.SetCursorPosition(21, 7);
+            MaskPassword();
+            }
+
+        public void MaskPassword()
+        // Function respsonsible to mask the password with a "*"
+            {
+            while (true)
+                {
+                // Create a new variable that reads invidual keys. Depending on what key is pressed, certain actions will occur
+                var character = Console.ReadKey(true);
+                if (character.Key == ConsoleKey.Enter)
+                // On clicking the "Enter" key, Login() will be called.
+                    {
+                    Login();
+                    }
+                if (character.Key == ConsoleKey.Backspace && passInput.Length > 0)
+                    {
+                    // On clicking "Backspace", as long as password is more than 0, the length of * will decrease by 1 as well as the length of password.
+                    Console.Write("\b \b");
+                    passInput = passInput.Remove(passInput.Length - 1);
+                    }
+                else
+                // When clicking any other key, this will add the input character to the password and add to the number of * displaying.
+                    {
+                    passInput += character.KeyChar;
+                    Console.Write("*");
+                    }
+                }
+            }
+
+        public void Login()
+        // Function responsible for checking that the credentials are correct.
+            {
+            // Splits the file into an array of strings, each string representing an account.
+            string[] lines = System.IO.File.ReadAllLines("login.txt");
+            // Checks for correct credentials, going through each line of the text file until the corrent pair is found.
+            for (int i = 0; i < lines.Length; i++)
+                {
+                string[] details = lines[i].Split('|');
+                if (userInput == details[0] && passInput == details[1])
+                // If credentials are correct, user is logged in and can access the menu.
+                    {
+                    Console.SetCursorPosition(0, 11);
+                    Console.WriteLine("Valid Credentials!... Please enter");
+                    Console.ReadKey();
+                    Person person = new Person();
+                    person.menu();
+                    break;
+                    }
+                }
+            // When all lines are processed and there is still no correct match, Login request is rejected.
+            Console.SetCursorPosition(0, 10);
+            Console.WriteLine("Incorrect details! Please try again");
+            userInput = string.Empty;
+            passInput = string.Empty;
+            Console.ReadKey();
+            LoginScreen();
+            }
+        }
     internal class Person
         {
         private string inputAccount;
@@ -88,7 +178,7 @@ namespace assignment1
                     menu();
                     }
                 else
-                Console.WriteLine("Account not found!");
+                    Console.WriteLine("Account not found!");
                 Console.WriteLine("Check another account (y/n)?");
                 if (ConfirmChoice())
                 // Await's user response to attempt the function again, otherwise return menu.
@@ -123,7 +213,7 @@ namespace assignment1
                     menu();
                     }
                 else
-                Console.WriteLine("Account not found!");
+                    Console.WriteLine("Account not found!");
                 Console.WriteLine("Check another account (y/n)?");
                 if (ConfirmChoice())
                 // Await's user response to attempt the function again, otherwise return menu.
@@ -198,8 +288,8 @@ namespace assignment1
                         }
                     }
                 else
-                Console.WriteLine("Account not found!");
-                Console.WriteLine("Check another account (y/n)?"); 
+                    Console.WriteLine("Account not found!");
+                Console.WriteLine("Check another account (y/n)?");
                 if (ConfirmChoice())
                     {
                     emailAccountStatement();
@@ -238,7 +328,7 @@ namespace assignment1
                     }
                 // If SearchAccount() returns false, ErrorAccount is invoked (Function failed in locating the account).
                 else
-                Console.WriteLine("Account not found!");
+                    Console.WriteLine("Account not found!");
                 Console.WriteLine("Check another account (y/n)?");
                 if (ConfirmChoice())
                     {
@@ -446,7 +536,7 @@ namespace assignment1
             }
 
         public bool ConfirmChoice()
-        // Function Responsible to validate user's choice to complete a function.
+        // Function Responsible to validate user's choice.
             {
             while (true)
                 {
@@ -630,91 +720,6 @@ namespace assignment1
                     writer.Close();
                     }
                 }
-            }
-        }
-
-    internal class UserLogin
-    // Relevent functions for user to login.
-        {
-        private string userInput, passInput;
-
-        public void LoginScreen()
-        // Function respsonsible to display login screen and obtain user values.
-            {
-            Console.Clear();
-            Console.WriteLine("╔══════════════════════════════════════╗");
-            Console.WriteLine("|                                      |");
-            Console.WriteLine("|  WELCOME TO SIMPLE BANKING SYSTEM    |");
-            Console.WriteLine("|                                      |");
-            Console.WriteLine("|══════════════════════════════════════|");
-            Console.WriteLine("|          LOGIN TO START              |");
-            Console.WriteLine("|          Username:                   |");
-            Console.WriteLine("|          Password:                   |");
-            Console.WriteLine("|                                      |");
-            Console.WriteLine("╚══════════════════════════════════════╝");
-            Console.SetCursorPosition(21, 6);
-            userInput = Console.ReadLine();
-            Console.SetCursorPosition(21, 7);
-            MaskPassword();
-            }
-
-        public void MaskPassword()
-        // Function respsonsible to mask the password with a "*"
-            {
-            while (true)
-                {
-                // Create a new variable that reads invidual keys. Depending on what key is pressed, certain actions will occur
-                var character = Console.ReadKey(true);
-                if (character.Key == ConsoleKey.Enter)
-                // On clicking the "Enter" key, Login() will be called.
-                    {
-                    Login();
-                    }
-                if (character.Key == ConsoleKey.Backspace && passInput.Length > 0)
-                    {
-                    // On clicking "Backspace", as long as password is more than 0, the length of * will decrease by 1 as well as the length of password.
-                    Console.Write("\b \b");
-                    passInput = passInput.Remove(passInput.Length - 1);
-                    }
-                else
-                // When clicking any other key, this will add the input character to the password and add to the number of * displaying.
-                    {
-                    passInput += character.KeyChar;
-                    Console.Write("*");
-                    }
-                }
-            }
-
-        public void Login()
-        // Function responsible for checking that the credentials are correct.
-            {
-            string[] splits = System.IO.File.ReadAllText("login.txt").Split('|');
-            if (userInput == splits[0] && passInput == splits[1])
-                {
-                Console.SetCursorPosition(0, 11);
-                Console.WriteLine("Valid Credentials!... Please enter");
-                Console.ReadKey();
-                Person person = new Person();
-                person.menu();
-                }
-            else
-                {
-                Console.SetCursorPosition(0, 10);
-                Console.WriteLine("Incorrect details! Please try again");
-                userInput = string.Empty;
-                passInput = string.Empty;
-                Console.ReadKey();
-                LoginScreen();
-                }
-            }
-        }
-
-    internal class Program
-        {
-        private static void Main(string[] args)
-            {
-            UserLogin login = new UserLogin();
-            login.LoginScreen();
             }
         }
     }
