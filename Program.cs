@@ -12,7 +12,6 @@ namespace assignment1
             login.LoginScreen();
             }
         }
-
     internal class UserLogin
     // Relevent functions for user to login.
         {
@@ -81,7 +80,7 @@ namespace assignment1
                     Console.WriteLine("Valid Credentials!... Please enter");
                     Console.ReadKey();
                     Person person = new Person();
-                    person.menu();
+                    person.Menu();
                     break;
                     }
                 }
@@ -95,13 +94,13 @@ namespace assignment1
             }
         }
     internal class Person
+    // Relevent functions to navigate available features.
         {
-        private string inputAccount;
         private int inputUserId, menuChoice;
-        private string inputFname, inputLname, inputAddress, inputEmail, inputPNumber;
+        private string inputFname, inputLname, inputAddress, inputEmail, inputPNumber, inputAccount;
         private double inputAccountBalance;
 
-        public void menu()
+        public void Menu()
         // Main menu after user logs in successfully.
             {
             Console.Clear();
@@ -175,7 +174,7 @@ namespace assignment1
                     account.AccountStatement();
                     Console.WriteLine("Enter any key to go back to menu!");
                     Console.ReadKey();
-                    menu();
+                    Menu();
                     }
                 else
                     Console.WriteLine("Account not found!");
@@ -185,7 +184,7 @@ namespace assignment1
                     {
                     displayAccountDetails();
                     }
-                else menu();
+                else Menu();
                 }
 
             void depositAccount()
@@ -210,7 +209,7 @@ namespace assignment1
                     account.AccountDeposit(inputAmount);
                     Console.WriteLine("Deposit Successful!");
                     Console.ReadKey();
-                    menu();
+                    Menu();
                     }
                 else
                     Console.WriteLine("Account not found!");
@@ -220,7 +219,7 @@ namespace assignment1
                     {
                     depositAccount();
                     }
-                else menu();
+                else Menu();
                 }
 
             void withdrawAcount()
@@ -234,7 +233,7 @@ namespace assignment1
                     Console.SetCursorPosition(0, 11);
                     Console.WriteLine("Account found! Enter the amount...");
                     Console.SetCursorPosition(0, 8);
-                    Console.WriteLine("║          Amount : $                  ║");
+                    Console.WriteLine("|          Amount : $                  |");
                     Console.SetCursorPosition(21, 8);
                     // User attempts to input the value as a double type.
                     double inputAmount = Convert.ToInt32(Console.ReadLine());
@@ -245,7 +244,7 @@ namespace assignment1
                     account.AccountWithdraw(inputAmount);
                     Console.WriteLine("Withdraw Successful!");
                     Console.ReadKey();
-                    menu();
+                    Menu();
                     }
                 else
                     Console.WriteLine("Account not found!");
@@ -255,7 +254,7 @@ namespace assignment1
                     {
                     withdrawAcount();
                     }
-                else menu();
+                else Menu();
                 Console.ReadKey();
                 }
 
@@ -280,11 +279,11 @@ namespace assignment1
                         Console.SetCursorPosition(0, 17);
                         Console.WriteLine("Email sent successfully!...");
                         Console.ReadKey();
-                        menu();
+                        Menu();
                         }
                     else
                         {
-                        menu();
+                        Menu();
                         }
                     }
                 else
@@ -294,7 +293,7 @@ namespace assignment1
                     {
                     emailAccountStatement();
                     }
-                else menu();
+                else Menu();
                 Console.ReadKey();
                 }
 
@@ -319,11 +318,11 @@ namespace assignment1
                         Console.SetCursorPosition(0, 17);
                         Console.WriteLine("Account Deleted...");
                         Console.ReadKey();
-                        menu();
+                        Menu();
                         }
                     else
                         {
-                        menu();
+                        Menu();
                         }
                     }
                 // If SearchAccount() returns false, ErrorAccount is invoked (Function failed in locating the account).
@@ -334,7 +333,7 @@ namespace assignment1
                     {
                     deleteAccount();
                     }
-                else menu();
+                else Menu();
                 Console.ReadKey();
                 }
 
@@ -355,7 +354,7 @@ namespace assignment1
                         {
                         Console.WriteLine("Invalid input. Please enter a number between 1-7!");
                         Console.ReadKey();
-                        menu();
+                        Menu();
                         return false;
                         }
                     else return true;
@@ -364,7 +363,7 @@ namespace assignment1
                     {
                     Console.WriteLine("Invalid input. Please enter a number between 1-7!");
                     Console.ReadKey();
-                    menu();
+                    Menu();
                     return false;
                     }
                 }
@@ -437,14 +436,14 @@ namespace assignment1
                     account.SendEmail();
                     Console.WriteLine("\n Account number is: {0}", inputUserId);
                     Console.ReadKey();
-                    menu();
+                    Menu();
                     }
                 else
                     {
                     createForm();
                     }
                 Console.ReadKey();
-                menu();
+                Menu();
                 }
             }
 
@@ -578,7 +577,6 @@ namespace assignment1
                 }
             }
         }
-
     internal class Account
     // Relevent functions for a specifed account.
         {
