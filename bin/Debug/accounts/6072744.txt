@@ -1,7 +1,0 @@
-AccountNo|6072744
-First Name|ben
-Last Name|ben
-Address|ben
-Phone|123
-Email|kphetmany@gmail.com
-Balance|0

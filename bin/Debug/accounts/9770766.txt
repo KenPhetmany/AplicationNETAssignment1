@@ -4,4 +4,8 @@ Last Name|Phetmany
 Address|UTS
 Phone|04217123
 Email|kphetmany@gmail.com
-Balance|0
+Balance|3220
+19.09.2020|deposit|3003|3003
+19.09.2020|withdraw|90|2913
+19.09.2020|deposit|7|2920
+19.09.2020|deposit|300|3220

@@ -8,10 +8,11 @@ namespace assignment1
         {
         private static void Main(string[] args)
             {
-            UserLogin login = new UserLogin();
-            login.LoginScreen();
+            UserLogin user = new UserLogin();
+            user.LoginScreen() ;
             }
         }
+
     internal class UserLogin
     // Relevent functions for user to login.
         {
@@ -93,12 +94,14 @@ namespace assignment1
             LoginScreen();
             }
         }
+
     internal class Person
     // Relevent functions to navigate available features.
         {
         private int inputUserId, menuChoice;
         private string inputFname, inputLname, inputAddress, inputEmail, inputPNumber, inputAccount;
         private double inputAccountBalance;
+        private double amount;
 
         public void Menu()
         // Main menu after user logs in successfully.
@@ -159,7 +162,7 @@ namespace assignment1
                     }
                 }
 
-            // Nearly all functions will involve the bool SearchAccount(), GetAccount() and bool ErrorAccount() to remove repetitve code.
+            // Nearly all functions will involve the bool SearchAccount(), GetAccount() and bool ConfirmChoice() to remove repetitve code.
             void displayAccountDetails()
             // Function responsible in showing the statement of an existing account.
                 {
@@ -177,8 +180,10 @@ namespace assignment1
                     Menu();
                     }
                 else
-                    Console.WriteLine("Account not found!");
+                Console.SetCursorPosition(0, 11);
+                Console.WriteLine("Account not found!");
                 Console.WriteLine("Check another account (y/n)?");
+                Console.SetCursorPosition(29, 12);
                 if (ConfirmChoice())
                 // Await's user response to attempt the function again, otherwise return menu.
                     {
@@ -201,19 +206,31 @@ namespace assignment1
                     Console.WriteLine("|          Amount : $                  |");
                     Console.SetCursorPosition(21, 8);
                     // User attempts to input the value as a double type.
-                    double inputAmount = Convert.ToInt32(Console.ReadLine());
+                    string inputValue = Console.ReadLine();
+                    while (validateAmount(inputValue))
+                        {
+                        Console.SetCursorPosition(0, 11);
+                        Console.WriteLine("Invalid amount! Please enter a valid amount");
+                        Console.SetCursorPosition(0, 8);
+                        Console.WriteLine("|          Amount : $                  |");
+                        Console.SetCursorPosition(22, 8);
+                        inputValue = Console.ReadLine();
+                        }
                     // Gets details from the located account and set it.
                     GetAccount();
                     Account account = new Account(inputUserId, inputAccountBalance, inputFname, inputLname, inputAddress, inputPNumber, inputEmail);
                     // Updates the value of the provided account.
-                    account.AccountDeposit(inputAmount);
-                    Console.WriteLine("Deposit Successful!");
+                    account.AccountDeposit(amount);
+                    Console.SetCursorPosition(0, 11);
+                    Console.WriteLine("Deposit Successful!                                         ");
                     Console.ReadKey();
                     Menu();
                     }
                 else
-                    Console.WriteLine("Account not found!");
+                Console.SetCursorPosition(0, 11);
+                Console.WriteLine("Account not found!");
                 Console.WriteLine("Check another account (y/n)?");
+                Console.SetCursorPosition(29, 12);
                 if (ConfirmChoice())
                 // Await's user response to attempt the function again, otherwise return menu.
                     {
@@ -236,19 +253,30 @@ namespace assignment1
                     Console.WriteLine("|          Amount : $                  |");
                     Console.SetCursorPosition(21, 8);
                     // User attempts to input the value as a double type.
-                    double inputAmount = Convert.ToInt32(Console.ReadLine());
-                    // Gets details from the located account and set it.
+                    string inputValue = Console.ReadLine();
+                    while (validateAmount(inputValue))
+                        {
+                        Console.SetCursorPosition(0, 11);
+                        Console.WriteLine("Invalid amount! Please enter a valid amount");
+                        Console.SetCursorPosition(0, 8);
+                        Console.WriteLine("|          Amount : $                  |");
+                        Console.SetCursorPosition(22, 8);
+                        inputValue = Console.ReadLine();
+                        }                    // Gets details from the located account and set it.
                     GetAccount();
                     Account account = new Account(inputUserId, inputAccountBalance, inputFname, inputLname, inputAddress, inputPNumber, inputEmail);
                     // Updates the value of the provided account.
-                    account.AccountWithdraw(inputAmount);
-                    Console.WriteLine("Withdraw Successful!");
+                    account.AccountWithdraw(amount);
+                    Console.SetCursorPosition(0, 11);
+                    Console.WriteLine("Withdraw Successful!                                ");
                     Console.ReadKey();
                     Menu();
                     }
                 else
-                    Console.WriteLine("Account not found!");
+                Console.SetCursorPosition(0, 11);
+                Console.WriteLine("Account not found!");
                 Console.WriteLine("Check another account (y/n)?");
+                Console.SetCursorPosition(29, 12);
                 if (ConfirmChoice())
                 // Await's user response to attempt the function again, otherwise return menu.
                     {
@@ -287,8 +315,11 @@ namespace assignment1
                         }
                     }
                 else
-                    Console.WriteLine("Account not found!");
+                Console.SetCursorPosition(0, 11);
+                Console.WriteLine("Account not found!");
                 Console.WriteLine("Check another account (y/n)?");
+                Console.SetCursorPosition(29, 12);
+
                 if (ConfirmChoice())
                     {
                     emailAccountStatement();
@@ -325,10 +356,12 @@ namespace assignment1
                         Menu();
                         }
                     }
-                // If SearchAccount() returns false, ErrorAccount is invoked (Function failed in locating the account).
+                // If SearchAccount() returns false, ConfirmChoice() is invoked (Function failed in locating the account).
                 else
-                    Console.WriteLine("Account not found!");
+                Console.SetCursorPosition(0, 11);
+                Console.WriteLine("Account not found!");
                 Console.WriteLine("Check another account (y/n)?");
+                Console.SetCursorPosition(29, 12);
                 if (ConfirmChoice())
                     {
                     deleteAccount();
@@ -365,6 +398,20 @@ namespace assignment1
                     Console.ReadKey();
                     Menu();
                     return false;
+                    }
+                }
+
+            bool validateAmount(string inputValue)
+            // Function responsible for validating menu choice.
+                {
+                try
+                    {
+                    amount = Convert.ToDouble(inputValue);
+                    return false;
+                    }
+                catch (Exception e)
+                    {
+                    return true;
                     }
                 }
 
@@ -467,7 +514,7 @@ namespace assignment1
             detail = lines[5].Split('|');
             inputEmail = detail[1];
             detail = lines[6].Split('|');
-            inputAccountBalance = Convert.ToInt32(detail[1]);
+            inputAccountBalance = Convert.ToDouble(detail[1]);
             }
 
         public bool EmailCheck(string email)
@@ -541,20 +588,30 @@ namespace assignment1
                 {
                 try
                     {
-                    string inputChoice = Console.ReadLine();
-                    switch (inputChoice)
+                    char input = Console.ReadKey().KeyChar.ToString().ToLower()[0];
+                    if (char.IsLetter(input))
                         {
-                        case "y":
-                            return true;
+                        switch (input)
+                            {
+                            case 'y':
+                                return true;
 
-                        case "n":
-                            return false;
+                            case 'n':
+                                return false;
+
+                            default:
+                                Console.SetCursorPosition(0, 16);
+                                Console.WriteLine("Please select from the options listed");
+                                break;
+                            }
                         }
+
                     }
                 catch (Exception e)
                     {
-                    Console.WriteLine(e);
+                    Console.WriteLine("Error. Please select 'y' or 'no'");
                     Console.ReadKey();
+                    ConfirmChoice();
                     }
                 }
             }
@@ -577,6 +634,7 @@ namespace assignment1
                 }
             }
         }
+
     internal class Account
     // Relevent functions for a specifed account.
         {
@@ -694,7 +752,10 @@ namespace assignment1
                 }
             catch (Exception e)
                 {
-                Console.WriteLine("Exception caught in CreateTestMessage2(): {0}", e.ToString());
+                Console.WriteLine("Exception caught in CreateTestMessage2(): {0}", e.ToString()); 
+                Console.WriteLine("Email could not be sent! Please return to the menu");
+                Console.ReadKey();
+
                 }
             }
 
