@@ -10,8 +10,8 @@
 ## Login Details 
 User can log in using one of the three accounts that were already provided ("login.txt" located in Assignment-1).
 * USERNAME: "guest", PASSWORD: "1234"
-* USERNAME: "user2", PASSWORD: "password123"
-* USERNAME: "user1", PASSWORD: "321password"
+* USERNAME: "user1", PASSWORD: "password123"
+* USERNAME: "user2", PASSWORD: "321password"
 
 ## Account Details
 On initial login, the user will already be provided two accounts:
