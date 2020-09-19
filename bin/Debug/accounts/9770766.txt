@@ -1,11 +1,16 @@
-AccountNo|9770766
 First Name|Ken 
 Last Name|Phetmany
 Address|UTS
 Phone|04217123
 Email|kphetmany@gmail.com
-Balance|3220
+AccountNo|9770766
+Balance|3319
 19.09.2020|deposit|3003|3003
 19.09.2020|withdraw|90|2913
 19.09.2020|deposit|7|2920
 19.09.2020|deposit|300|3220
+19.09.2020|deposit|200|3420
+19.09.2020|withdraw|300|3120
+19.09.2020|withdraw|100|3020
+19.09.2020|deposit|200|3220
+19.09.2020|deposit|99|3319

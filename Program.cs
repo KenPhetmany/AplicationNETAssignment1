@@ -118,9 +118,9 @@ namespace assignment1
             Console.WriteLine("|     6. Delete Account              |");
             Console.WriteLine("|     7. Exit                        |");
             Console.WriteLine("|════════════════════════════════════|");
-            Console.WriteLine("|   Enter Number:                    |");
+            Console.WriteLine("|   Enter a Number between 1-7:      |");
             Console.WriteLine("╚════════════════════════════════════╝");
-            Console.SetCursorPosition(18, 11);
+            Console.SetCursorPosition(32, 11);
             string input = Console.ReadLine();
             // Need to validate user input, to ensure it is within acceptible bounds.
             validateMenuChoice();
@@ -304,6 +304,7 @@ namespace assignment1
                         {
                         // Calls in the function to send the email, using the set email.
                         account.SendEmail();
+                        Console.WriteLine("Email sending...");
                         Console.SetCursorPosition(0, 17);
                         Console.WriteLine("Email sent successfully!...");
                         Console.ReadKey();
@@ -480,8 +481,9 @@ namespace assignment1
                     Console.WriteLine("\n \nAccount Created! details will be provided via email.");
                     // Confirms account creation through sending an email.
                     Account account = new Account(inputUserId, inputAccountBalance, inputFname, inputLname, inputAddress, inputPNumber, inputEmail);
-                    account.SendEmail();
                     Console.WriteLine("\n Account number is: {0}", inputUserId);
+                    Console.WriteLine("\n Email being sent, please wait 4-6 seconds before clicking any key");
+                    account.SendEmail();
                     Console.ReadKey();
                     Menu();
                     }
@@ -500,19 +502,19 @@ namespace assignment1
             // Identify each line uniquely using an Array String.
             string[] lines = System.IO.File.ReadAllLines("accounts\\" + inputAccount + ".txt");
             // Identify the specific line and split the line to obtain the correct variable.
-            string[] detail = lines[0].Split('|');
             // Assign each variable to their correpsonding value.
-            inputUserId = Convert.ToInt32(detail[1]);
-            detail = lines[1].Split('|');
+            string[] detail = lines[0].Split('|');
             inputFname = detail[1];
-            detail = lines[2].Split('|');
+            detail = lines[1].Split('|');
             inputLname = detail[1];
-            detail = lines[3].Split('|');
+            detail = lines[2].Split('|');
             inputAddress = detail[1];
-            detail = lines[4].Split('|');
+            detail = lines[3].Split('|');
             inputPNumber = detail[1];
-            detail = lines[5].Split('|');
+            detail = lines[4].Split('|');
             inputEmail = detail[1];
+            detail = lines[5].Split('|');
+            inputUserId = Convert.ToInt32(detail[1]);
             detail = lines[6].Split('|');
             inputAccountBalance = Convert.ToDouble(detail[1]);
             }
@@ -561,19 +563,19 @@ namespace assignment1
             Console.WriteLine("|                                      |");
             Console.WriteLine("╚══════════════════════════════════════╝");
             Console.SetCursorPosition(27, 7);
-            string searchInput = Console.ReadLine();
+            string searchInput = Console.ReadLine(); // I enter 10001 into the thing
             // Creates an array string of account names
             string[] accounts = Directory.GetFiles("accounts");
             foreach (string i in accounts)
             // Processes each value to check whether the input exists in the array string
                 {
-                if (i == "accounts\\" + searchInput + ".txt")
+                if (i == "accounts\\" + searchInput + ".txt") // IF THE FUNCTION FINDS IT 
                     {
                     // If a file with the input value exists, then inputAccount is assigned to the searched value.
                     // Returns true to show that the Function has successfully located an account.
                     int number = Convert.ToInt32(searchInput);
                     inputAccount = searchInput;
-                    inputUserId = number;
+                    inputUserId = number; // 100001
                     return true;
                     }
                 }
@@ -623,12 +625,12 @@ namespace assignment1
             using (var text = new StreamWriter("accounts\\" + userId + ".txt"))
                 {
                 // Writes text in way that is always identical for each new value.
-                text.WriteLine("AccountNo|{0}", userId);
                 text.WriteLine("First Name|{0}", firstName);
                 text.WriteLine("Last Name|{0}", lastName);
                 text.WriteLine("Address|{0}", address);
                 text.WriteLine("Phone|{0}", phoneNumber);
                 text.WriteLine("Email|{0}", email);
+                text.WriteLine("AccountNo|{0}", userId);
                 text.WriteLine("Balance|{0}", accountBalance);
                 text.Close();
                 }
