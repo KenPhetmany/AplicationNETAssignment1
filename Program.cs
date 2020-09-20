@@ -9,7 +9,7 @@ namespace assignment1
         private static void Main(string[] args)
             {
             UserLogin user = new UserLogin();
-            user.LoginScreen() ;
+            user.LoginScreen();
             }
         }
 
@@ -180,7 +180,7 @@ namespace assignment1
                     Menu();
                     }
                 else
-                Console.SetCursorPosition(0, 11);
+                    Console.SetCursorPosition(0, 11);
                 Console.WriteLine("Account not found!");
                 Console.WriteLine("Check another account (y/n)?");
                 Console.SetCursorPosition(29, 12);
@@ -227,7 +227,7 @@ namespace assignment1
                     Menu();
                     }
                 else
-                Console.SetCursorPosition(0, 11);
+                    Console.SetCursorPosition(0, 11);
                 Console.WriteLine("Account not found!");
                 Console.WriteLine("Check another account (y/n)?");
                 Console.SetCursorPosition(29, 12);
@@ -273,7 +273,7 @@ namespace assignment1
                     Menu();
                     }
                 else
-                Console.SetCursorPosition(0, 11);
+                    Console.SetCursorPosition(0, 11);
                 Console.WriteLine("Account not found!");
                 Console.WriteLine("Check another account (y/n)?");
                 Console.SetCursorPosition(29, 12);
@@ -316,7 +316,7 @@ namespace assignment1
                         }
                     }
                 else
-                Console.SetCursorPosition(0, 11);
+                    Console.SetCursorPosition(0, 11);
                 Console.WriteLine("Account not found!");
                 Console.WriteLine("Check another account (y/n)?");
                 Console.SetCursorPosition(29, 12);
@@ -359,7 +359,7 @@ namespace assignment1
                     }
                 // If SearchAccount() returns false, ConfirmChoice() is invoked (Function failed in locating the account).
                 else
-                Console.SetCursorPosition(0, 11);
+                    Console.SetCursorPosition(0, 11);
                 Console.WriteLine("Account not found!");
                 Console.WriteLine("Check another account (y/n)?");
                 Console.SetCursorPosition(29, 12);
@@ -603,7 +603,7 @@ namespace assignment1
 
                             default:
                                 Console.SetCursorPosition(0, 16);
-                                Console.WriteLine("Please select from the options listed");
+                                Console.WriteLine("Error. Please select 'y' or 'n'");
                                 break;
                             }
                         }
@@ -611,7 +611,7 @@ namespace assignment1
                     }
                 catch (Exception e)
                     {
-                    Console.WriteLine("Error. Please select 'y' or 'no'");
+                    Console.WriteLine("Error. Please select 'y' or 'n'");
                     Console.ReadKey();
                     ConfirmChoice();
                     }
@@ -754,7 +754,7 @@ namespace assignment1
                 }
             catch (Exception e)
                 {
-                Console.WriteLine("Exception caught in CreateTestMessage2(): {0}", e.ToString()); 
+                Console.WriteLine("Exception caught in CreateTestMessage2(): {0}", e.ToString());
                 Console.WriteLine("Email could not be sent! Please return to the menu");
                 Console.ReadKey();
 
