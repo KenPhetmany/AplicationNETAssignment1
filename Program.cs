@@ -266,6 +266,14 @@ namespace assignment1
                     GetAccount();
                     Account account = new Account(inputUserId, inputAccountBalance, inputFname, inputLname, inputAddress, inputPNumber, inputEmail);
                     // Updates the value of the provided account.
+
+                    while (account.AccountWithdraw(amount))
+                        {
+                        Console.SetCursorPosition(0, 11);
+                        Console.WriteLine("Cannot withdraw! Insufficient funds. Press any key to return to menu. ");
+                        Console.ReadKey();
+                        Menu();
+                        }
                     account.AccountWithdraw(amount);
                     Console.SetCursorPosition(0, 11);
                     Console.WriteLine("Withdraw Successful!                                ");
@@ -531,7 +539,7 @@ namespace assignment1
         // Boolean function responsible for validating the phone number.
             {
             // the string length of phonenumber be less than 10.
-            if (phoneNumber.Length < 10) return false;
+            if (phoneNumber.Length < 10 && Int32.TryParse(phoneNumber, out _)) return false;
             else return true;
             }
 
@@ -711,21 +719,26 @@ namespace assignment1
             updateTransaction(type);
             }
 
-        public void AccountWithdraw(double amt)
+        public bool AccountWithdraw(double amt)
         // Function responsible for computing the withdraw function.
             {
-            double temp = accountBalance;
-            amount = amt;
-            string type = "withdraw";
-            accountBalance = temp - amount;
-            // Line of string to replace the original line.
-            string text = "Balance|" + accountBalance;
-            // Locates the correct file to update.
-            string[] lines = System.IO.File.ReadAllLines("accounts\\" + userId + ".txt");
-            lines[6] = text;
-            // Overwrites the original line with a new string of text that includes the updated account balance.
-            File.WriteAllLines("accounts\\" + userId + ".txt", lines);
-            updateTransaction(type);
+            if (accountBalance > amt)
+                {
+                double temp = accountBalance;
+                amount = amt;
+                string type = "withdraw";
+                accountBalance = temp - amount;
+                // Line of string to replace the original line.
+                string text = "Balance|" + accountBalance;
+                // Locates the correct file to update.
+                string[] lines = System.IO.File.ReadAllLines("accounts\\" + userId + ".txt");
+                lines[6] = text;
+                // Overwrites the original line with a new string of text that includes the updated account balance.
+                File.WriteAllLines("accounts\\" + userId + ".txt", lines);
+                updateTransaction(type);
+                return false;
+                }
+            else return true;
             }
 
         public void SendEmail()
